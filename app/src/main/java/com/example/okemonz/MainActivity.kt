@@ -1,5 +1,6 @@
 package com.example.okemonz
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +9,7 @@ import com.example.okemonz.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val PokemonAdapter by lazy { PokemonAdapter() }
+    private val pokemonAdapter = PokemonAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,23 +18,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
+        pokemonAdapter.onClick = {
+            val intent = Intent(this, SecondActivity::class.java).apply { putExtra("id", it.id)
+            }
+            this.startActivity(intent)
+        }
 
-        PokemonAdapter.differ.submitList(Repository.pokemons)
+
+        pokemonAdapter.differ.submitList(Repository.pokemons)
 
 
 
         binding.apply {
             rvCharacters.apply {
                 layoutManager = LinearLayoutManager(this@MainActivity)
-                adapter = PokemonAdapter
+                adapter = pokemonAdapter
             }
 
         }
 
-
-
     }
-//    override fun onCreate(savedInstanceState: Bundle?) {
+//    override fun onCreate(savedInstanceState: Bundle?) {  ( нужно прописывать ещё раз ?)
 //        super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
 //
